@@ -1,5 +1,5 @@
 "use client";
-import { FormEvent, JSX, useState } from "react";
+import { FormEvent, JSX, useEffect, useState } from "react";
 
 export default function Gates(): JSX.Element {
   const [one, setOne] = useState("");
@@ -9,6 +9,19 @@ export default function Gates(): JSX.Element {
     event.preventDefault();
     setOne(ship);
   }
+
+  useEffect(() => {
+    fetch("/api/docks").then((response) => {
+      if (response.ok) {
+        response.json().then((data) => {
+          console.log(data);
+          setOne(data.dock);
+        });
+      } else {
+        console.error("Failed to fetch dock data");
+      }
+    });
+  }, []);
 
   return (
     <section>
