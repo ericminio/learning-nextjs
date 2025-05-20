@@ -12,7 +12,7 @@ export async function GET(request) {
   let status = 200;
   let data = {};
   if (isNaN(incoming)) {
-    status = 200;
+    status = 400;
     data = {
       number: incoming,
       error: "not a number",
