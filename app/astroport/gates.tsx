@@ -5,7 +5,7 @@ export default function Gates(): JSX.Element {
   const [one, setOne] = useState("");
   const [ship, setShip] = useState("");
 
-  async function dock(event: FormEvent<HTMLButtonElement>) {
+  async function dock(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setOne(ship);
   }
@@ -27,15 +27,17 @@ export default function Gates(): JSX.Element {
         <label id="ship-3"></label>
       </section>
 
-      <input
-        id="ship"
-        name="ship"
-        value={ship}
-        onChange={(e) => setShip(e.currentTarget.value)}
-      />
-      <button type="button" id="dock" onClick={dock}>
-        Dock
-      </button>
+      <form id="ship-form" onSubmit={dock}>
+        <input
+          id="ship"
+          name="ship"
+          value={ship}
+          onChange={(e) => setShip(e.currentTarget.value)}
+        />
+        <button type="submit" id="dock">
+          Dock
+        </button>
+      </form>
     </section>
   );
 }
