@@ -7,15 +7,22 @@ export default function Gates(): JSX.Element {
 
   async function dock(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    await fetch("/astroport/api/dock", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ ship }),
+    });
     setOne(ship);
   }
 
   useEffect(() => {
-    fetch("/api/docks").then((response) => {
+    fetch("/astroport/api/docks").then((response) => {
       if (response.ok) {
         response.json().then((data) => {
           console.log(data);
-          setOne(data.dock);
+          setOne(data.ship);
         });
       } else {
         console.error("Failed to fetch dock data");
