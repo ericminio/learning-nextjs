@@ -5,15 +5,17 @@ import { dockShip } from "@server/http/dockShip";
 import { getDockedShip } from "@server/http/getDockedShip";
 import { Astroport } from "../_domain/astroport";
  
+const defaultAstropport = new Astroport({ name: "default", gate_count: 0 });
+const defaultUser = new User({ astroport: defaultAstropport });
+
 export const DomainContext = React.createContext<{user:User, astroport: Astroport}>(
-  { user: new User(), astroport: new Astroport({ name: "default" }) }
+  { user: defaultUser, astroport: defaultAstropport }
 );
 
 export function DomainProvider({ children }: { children: React.ReactNode }) {
-  const [user] = React.useState(() => new User());
-  const [astroport] = React.useState(() => new Astroport({ name: "Hidden Face Gateway" }));
-
-  user.adapters.docker = async (user: User, ship: Ship): Promise<void> => {
+  const [astroport] = React.useState(() => new Astroport({ name: "Hidden Face Gateway", gate_count: 3 }));
+  
+  astroport.adapters.docker = async (user: User, ship: Ship): Promise<void> => {
     return await dockShip({ user: user.toJSON(), ship: ship.toJSON() });
   };
   astroport.adapters.getDockedShip = async (gate: number): Promise<Ship | null> => {
@@ -24,6 +26,8 @@ export function DomainProvider({ children }: { children: React.ReactNode }) {
     return null;
   };
 
+  const [user] = React.useState(() => new User({ astroport }));
+  
   return (
     <DomainContext.Provider value={{ user, astroport }}>
       {children}
