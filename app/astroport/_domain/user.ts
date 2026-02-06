@@ -1,12 +1,10 @@
 import { Ship } from "./ship";
 import { uuid } from "./uuid";
 
-export type Docker = (user : User, ship: Ship) => Promise<void>;
-
 export class User {
   user_id: string;
   adapters : {
-    docker: Docker;
+    docker: (user : User, ship: Ship) => Promise<void>;
   }
 
   constructor({ user_id }: { user_id?: string } = {}) {

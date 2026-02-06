@@ -1,6 +1,6 @@
 "use server";
 
-import { userFrom } from "../userProvider";
+import { userFrom } from "../domainProvider";
 import { Ship } from "@domain/ship";
 import { User } from "@domain/user";
 

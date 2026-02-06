@@ -2,13 +2,13 @@
 
 import Gates from "@react/Gates";
 import Greetings from "@react/Greetings";
-import { UserProvider } from "@react/userProvider";
+import { DomainProvider } from "@/app/astroport/_react/domainProvider";
 
 export default function Home() {
   return (
-    <UserProvider>
+    <DomainProvider>
       <Greetings />
       <Gates />
-    </UserProvider>
+    </DomainProvider>
   );
 }

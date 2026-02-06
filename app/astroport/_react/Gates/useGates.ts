@@ -1,12 +1,11 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
-import { getDockedShip } from "@server/http/getDockedShip";
-import { UserContext } from "../userProvider";
+import { DomainContext } from "../domainProvider";
 import { Ship } from "@domain/ship";
 
 export function useGates() {
   const [one, setOne] = useState("");
   const [name, setName] = useState("");
-  const user = useContext(UserContext);
+  const { user, astroport } = useContext(DomainContext);
   
   const dock = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -15,8 +14,8 @@ export function useGates() {
   }
 
   useEffect(() => {
-    getDockedShip().then((result) => {
-      setOne(result.ship);
+    astroport.getDockedShip({gate: 1}).then((ship) => {
+      setOne(ship?.name??"");
     });
   }, []);
 
