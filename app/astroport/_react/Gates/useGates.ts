@@ -3,22 +3,21 @@ import { DomainContext } from "../domainProvider";
 import { Ship } from "@domain/ship";
 
 export function useGates() {
-  const [one, setOne] = useState("");
+  const { user, astroport, astroportUpdated } = useContext(DomainContext);
+  const [gates, setGates] = useState(astroport.gates);
   const [name, setName] = useState("");
-  const { user, astroport } = useContext(DomainContext);
   
   const dock = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    user.docks(new Ship({ name })).then(() => {
-      setOne(name);
-    });    
+
+    await user.flies({ ship: new Ship({ name }) });
+    const gate = await user.requestsGate({ astroport });
+    await user.docks({ astroport, gate });  
   }
 
   useEffect(() => {
-    astroport.getDockedShip({gate: 1}).then((ship) => {
-      setOne(ship?.name??"");
-    });
-  }, []);
+    setGates(astroport.gates);
+  }, [astroport, astroportUpdated]);
 
-  return { one, name, setName, dock };
+  return { gates, name, setName, dock };
 }

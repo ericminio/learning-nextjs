@@ -1,35 +1,43 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { Astroport } from "@domain/astroport";
 import { User } from "@domain/user";
 import { Ship } from "@domain/ship";
 import { dockShip } from "@server/http/dockShip";
-import { getDockedShip } from "@server/http/getDockedShip";
-import { Astroport } from "../_domain/astroport";
+import { getDockedShips } from "@server/http/getDockedShips";
  
-const defaultAstropport = new Astroport({ name: "default", gate_count: 0 });
-const defaultUser = new User({ astroport: defaultAstropport });
+const defaultAstropport = new Astroport({ name: "Hidden Face Gateway", gate_count: 3 });
+const defaultUser = new User({ name: "Bob" });
 
-export const DomainContext = React.createContext<{user:User, astroport: Astroport}>(
-  { user: defaultUser, astroport: defaultAstropport }
+export const DomainContext = React.createContext<{user:User, astroport: Astroport, astroportUpdated: number}>(
+  { user: defaultUser, astroport: defaultAstropport, astroportUpdated: 0 }
 );
 
 export function DomainProvider({ children }: { children: React.ReactNode }) {
-  const [astroport] = React.useState(() => new Astroport({ name: "Hidden Face Gateway", gate_count: 3 }));
+  const [astroport] = React.useState(() => defaultAstropport);
+  const [user] = React.useState(() => defaultUser);
+  const [astroportUpdated, setAstroportUpdated] = React.useState(0);
   
-  astroport.adapters.docker = async (user: User, ship: Ship): Promise<void> => {
-    return await dockShip({ user: user.toJSON(), ship: ship.toJSON() });
-  };
-  astroport.adapters.getDockedShip = async (gate: number): Promise<Ship | null> => {
-    const result = await getDockedShip(gate);
-    if (result) {
-      return Ship.fromJSON(result);
-    }
-    return null;
+  user.adapters.docks = async ({ user, ship, gate }: { user: User, ship: Ship, gate: number }): Promise<void> => {
+    await dockShip({ user: user.toJSON(), ship: ship.toJSON(), gate: gate + 1 });
+    setAstroportUpdated(Date.now());
   };
 
-  const [user] = React.useState(() => new User({ astroport }));
-  
+  useEffect(() => {
+    const loadDockedShips = async () => {
+      const { gates } = await getDockedShips();
+      gates
+        .filter(({ ship }: { gate_number: number, ship: ReturnType<Ship["toJSON"]> }) => ship !== null)
+        .forEach(({ gate_number, ship }: { gate_number: number, ship: ReturnType<Ship["toJSON"]> }) => {
+        astroport.docks({ user, ship: Ship.fromJSON(ship), gate: gate_number - 1});
+      });
+      setAstroportUpdated(Date.now());
+    };
+    void loadDockedShips();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <DomainContext.Provider value={{ user, astroport }}>
+    <DomainContext.Provider value={{ user, astroport, astroportUpdated }}>
       {children}
     </DomainContext.Provider>
   );

@@ -1,22 +1,16 @@
+import { AstroportIsFullError, GateNotAvailableError } from "./errors";
 import { Ship } from "./ship";
 import { User } from "./user";
 
 export class Astroport {
   name: string;
   gate_count: number;
-
-  adapters : {
-    getDockedShip: (gate: number) => Promise<Ship | null>;
-    docker: (user : User, ship: Ship) => Promise<void>;
-  }
+  gates: Ship[];
   
   constructor({name, gate_count}: {name: string, gate_count: number}) {
     this.name = name;
     this.gate_count = gate_count;
-    this.adapters = {
-      getDockedShip: async () => null,
-      docker: async () => {},
-    };
+    this.gates = new Array(gate_count).fill(null);    
   }
 
   toJSON() {
@@ -31,10 +25,21 @@ export class Astroport {
   }
 
   async getDockedShip({ gate }: { gate: number }) {
-    return this.adapters.getDockedShip(gate);
+    return this.gates[gate];
   }
 
-  async docks(user: User, ship: Ship) {
-    return this.adapters.docker(user, ship);
+  async assignGate() {
+    const availableGate = this.gates.findIndex(g => g === null);
+    if (availableGate === -1) {
+      throw new AstroportIsFullError();
+    }
+    return availableGate;
+  }
+
+  async docks({ user, ship, gate }: { user: User; ship: Ship; gate: number }) {
+    if (this.gates[gate] !== null) {
+      throw new GateNotAvailableError();
+    }
+    this.gates[gate] = ship;
   }
 }

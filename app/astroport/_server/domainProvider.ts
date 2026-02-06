@@ -5,8 +5,8 @@ import { saveDock } from "./sql/commands/saveDock";
 export const userFrom = (json : ReturnType<User["toJSON"]>) => {
   const user = User.fromJSON(json);
 
-  user.astroport.adapters.docker = async (user: User, ship: Ship) => {
-    await saveDock(ship.name, 1);
+  user.adapters.docks = async ({ ship, gate }: { ship: Ship, gate: number }) => {
+    await saveDock(ship.name, gate);
   };
   return user;
 }

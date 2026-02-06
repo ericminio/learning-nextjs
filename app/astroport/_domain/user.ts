@@ -1,31 +1,43 @@
 import { Astroport } from "./astroport";
 import { Ship } from "./ship";
-import { uuid } from "./uuid";
 
 export class User {
-  user_id: string;
-  astroport: Astroport;
+  name: string;
+  ship?: Ship;
 
-  constructor({ user_id, astroport }: { user_id?: string, astroport: Astroport }) {
-    this.user_id = user_id ?? uuid();
-    this.astroport = astroport;
+  adapters : {
+    docks: ({user, ship, gate}:{user: User, ship: Ship, gate: number}) => Promise<void>;
+  }
+
+  constructor({ name }: { name: string }) {
+    this.name = name;
+    this.adapters = {
+      docks: async () => {},
+    };
   }
 
   toJSON() {
     return {
-      user_id: this.user_id, 
-      astroport: this.astroport.toJSON()     
+      name: this.name,   
     };
   }
 
   static fromJSON(json: ReturnType<User["toJSON"]>) {
     return new User({
-      user_id: json.user_id, 
-      astroport: Astroport.fromJSON(json.astroport)
+      name: json.name, 
     });
   }
 
-  async docks(ship: Ship) {
-    return this.astroport.docks(this, ship);
+  async flies({ ship }: { ship: Ship }) {
+    this.ship = ship;
+  }
+
+  async requestsGate({ astroport }: { astroport: Astroport }) {
+    return astroport.assignGate();
+  }
+
+  async docks({ astroport, gate }: { astroport: Astroport; gate: number }) {
+    await astroport.docks({ user: this, ship: this.ship!, gate });
+    await this.adapters.docks({ user: this, ship: this.ship!, gate });
   }
 }
