@@ -1,5 +1,5 @@
-import { Ship } from "../_domain/ship";
-import { User } from "../_domain/user";
+import { Ship } from "@domain/ship";
+import { User } from "@domain/user";
 import { saveDock } from "./sql/commands/saveDock";
 
 export const userFrom = (json : ConstructorParameters<typeof User>[0]) => {

@@ -1,4 +1,4 @@
-jest.mock("../_domain/uuid", () => {
+jest.mock("@domain/uuid", () => {
   return {
     uuid: () => "fixed-uuid-for-tests",
   };
@@ -7,7 +7,7 @@ jest.mock("../_domain/uuid", () => {
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import AstroportPage from "../page";
-import { saveDock } from "../server/sql/commands/saveDock";
+import { saveDock } from "@server/sql/commands/saveDock";
 
 describe("Docking feature", () => {
   it("allows docking a new ship in gate-1", async () => {

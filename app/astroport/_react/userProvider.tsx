@@ -1,7 +1,7 @@
 import React from "react";
-import { User } from "../_domain/user";
-import { Ship } from "../_domain/ship";
-import { dockShip } from "../server/http/dockShip";
+import { User } from "@domain/user";
+import { Ship } from "@domain/ship";
+import { dockShip } from "@server/http/dockShip";
  
 export const UserContext = React.createContext<User>(new User());
 

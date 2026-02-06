@@ -1,8 +1,8 @@
 "use server";
 
 import { userFrom } from "../userProvider";
-import { Ship } from "../../_domain/ship";
-import { User } from "../../_domain/user";
+import { Ship } from "@domain/ship";
+import { User } from "@domain/user";
 
 export async function dockShip(params: { 
   user: ConstructorParameters<typeof User>[0]; 

@@ -20,7 +20,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@domain/*": ["./app/astroport/_domain/*"],
+      "@react/*": ["./app/astroport/_react/*"],
+      "@server/*": ["./app/astroport/_server/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
