@@ -1,8 +1,8 @@
 "use client";
 
-import Gates from "./ui/gates";
-import Greetings from "./ui/greetings";
-import { UserProvider } from "./ui/userProvider";
+import Gates from "./client/Gates";
+import Greetings from "./client/Greetings";
+import { UserProvider } from "./client/userProvider";
 
 export default function Home() {
   return (
