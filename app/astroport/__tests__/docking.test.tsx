@@ -1,3 +1,9 @@
+jest.mock("../_domain/uuid", () => {
+  return {
+    uuid: () => "fixed-uuid-for-tests",
+  };
+});
+
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import AstroportPage from "../page";

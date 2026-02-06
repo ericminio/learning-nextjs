@@ -1,11 +1,16 @@
 "use server";
 
-import { saveDock } from "./commands/saveDock.js";
-import { getDocks } from "./queries/getDocks.js";
+import { userFrom } from "./userProvider";
+import { Ship } from "../_domain/ship";
+import { getDocks } from "./queries/getDocks";
+import { User } from "../_domain/user";
 
-export async function dockShip(ship: string) {
-  await saveDock(ship, 1);
-  return { success: true };
+export async function dockShip(params: { 
+  user: ConstructorParameters<typeof User>[0]; 
+  ship: ConstructorParameters<typeof Ship>[0] 
+}): Promise<void> {
+  const user = userFrom(params.user);
+  await user.docks(new Ship(params.ship));
 }
 
 export async function getDockedShip() {

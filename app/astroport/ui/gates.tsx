@@ -4,7 +4,7 @@ import { JSX } from "react";
 import { useGates } from "./useGates";
 
 export default function Gates(): JSX.Element {
-  const { one, ship, setShip, dock } = useGates();
+  const { one, name, setName, dock } = useGates();
 
   return (
     <section>
@@ -27,8 +27,8 @@ export default function Gates(): JSX.Element {
         <input
           id="ship"
           name="ship"
-          value={ship}
-          onChange={(e) => setShip(e.currentTarget.value)}
+          value={name}
+          onChange={(e) => setName(e.currentTarget.value)}
         />
         <button type="submit" id="dock">
           Dock

@@ -1,14 +1,17 @@
-import { FormEvent, useEffect, useState } from "react";
-import { dockShip, getDockedShip } from "../server/actions";
+import { FormEvent, useContext, useEffect, useState } from "react";
+import { getDockedShip } from "../server/actions";
+import { UserContext } from "./userProvider";
+import { Ship } from "../_domain/ship";
 
 export function useGates() {
   const [one, setOne] = useState("");
-  const [ship, setShip] = useState("");
+  const [name, setName] = useState("");
+  const user = useContext(UserContext);
   
   const dock = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    await dockShip(ship);
-    setOne(ship);
+    user.docks(new Ship({ name }));
+    setOne(name);
   }
 
   useEffect(() => {
@@ -17,5 +20,5 @@ export function useGates() {
     });
   }, []);
 
-  return { one, ship, setShip, dock };
+  return { one, name, setName, dock };
 }
