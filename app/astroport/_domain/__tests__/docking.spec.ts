@@ -3,7 +3,7 @@ import { AstroportIsFullError, GateNotAvailableError } from "../errors";
 import { Ship } from "../ship";
 import { User } from "../user";
 
-describe('Astroport Docking', () => {
+describe("Astroport Docking", () => {
   let astroport: Astroport;
   let alice: User;
   let bob: User;
@@ -21,7 +21,7 @@ describe('Astroport Docking', () => {
     await bob.flies({ ship: falcon });
   });
 
-  it("requires communication", async () => {    
+  it("requires communication", async () => {
     const gate = await alice.requestsGate({ astroport });
     await alice.docks({ astroport, gate });
 

@@ -1,4 +1,4 @@
-const [_, __, dbfilename, sqlfilename] = process.argv;
+const [, , dbfilename, sqlfilename] = process.argv;
 
 if (!dbfilename.endsWith(".sqlite") || !sqlfilename.endsWith(".sql")) {
   const command = `Error:

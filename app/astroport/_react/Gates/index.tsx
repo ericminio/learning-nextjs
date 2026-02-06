@@ -8,7 +8,7 @@ export default function Gates(): JSX.Element {
 
   return (
     <section>
-      {gates.map ((ship, index) => (
+      {gates.map((ship, index) => (
         <section key={index} id={`gate-${index + 1}`}>
           <h2>{`Gate ${index + 1}`}</h2>
           <label id={`ship-${index + 1}`}>{ship ? ship.name : ""}</label>

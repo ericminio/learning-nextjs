@@ -12,7 +12,9 @@
     "db:clean": "rm -f db/node_api_exercise.sqlite",
     "db:create": "touch db/node_api_exercise.sqlite && node db/run.js db/node_api_exercise.sqlite app/astroport/_server/sql/schema.sql",
     "db:test:clean": "rm -f db/node_api_exercise_test.sqlite",
-    "db:test:create": "touch db/node_api_exercise_test.sqlite && node db/run.js db/node_api_exercise_test.sqlite app/astroport/_server/sql/schema.sql"
+    "db:test:create": "touch db/node_api_exercise_test.sqlite && node db/run.js db/node_api_exercise_test.sqlite app/astroport/_server/sql/schema.sql",
+    "pretest": "npm run prettier && eslint --fix .",
+    "prettier": "npx prettier --write ."
   },
   "dependencies": {
     "next": "15.3.2",
@@ -30,10 +32,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "eslint": "^9",
+    "eslint": "^9.39.2",
     "eslint-config-next": "15.3.2",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
+    "prettier": "^3.8.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
