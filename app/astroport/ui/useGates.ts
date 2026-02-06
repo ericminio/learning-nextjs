@@ -1,5 +1,5 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
-import { getDockedShip } from "../server/actions";
+import { getDockedShip } from "../server/http/getDockedShip";
 import { UserContext } from "./userProvider";
 import { Ship } from "../_domain/ship";
 

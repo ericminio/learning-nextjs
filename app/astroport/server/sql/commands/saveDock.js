@@ -1,4 +1,4 @@
-import { commit, runQuery, getConnection, getDbFile } from "../../../db/sql";
+import { commit, runQuery, getConnection, getDbFile } from "../../../../db/sql";
 
 export const saveDock = async (ship, gateNumber) => {
   const db = await getConnection(await getDbFile());

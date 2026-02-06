@@ -10,9 +10,9 @@
     "lint": "next lint",
     "test": "npm run db:test:clean && npm run db:test:create && jest",
     "db:clean": "rm -f db/node_api_exercise.sqlite",
-    "db:create": "touch db/node_api_exercise.sqlite && node db/run.js db/node_api_exercise.sqlite app/db/schema.sql",
+    "db:create": "touch db/node_api_exercise.sqlite && node db/run.js db/node_api_exercise.sqlite app/astroport/server/sql/schema.sql",
     "db:test:clean": "rm -f db/node_api_exercise_test.sqlite",
-    "db:test:create": "touch db/node_api_exercise_test.sqlite && node db/run.js db/node_api_exercise_test.sqlite app/db/schema.sql"
+    "db:test:create": "touch db/node_api_exercise_test.sqlite && node db/run.js db/node_api_exercise_test.sqlite app/astroport/server/sql/schema.sql"
   },
   "dependencies": {
     "next": "15.3.2",
