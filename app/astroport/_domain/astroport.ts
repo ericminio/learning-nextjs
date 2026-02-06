@@ -4,7 +4,6 @@ import { User } from "./user";
 export class Astroport {
   name: string;
   gate_count: number;
-  ships: Ship[];
 
   adapters : {
     getDockedShip: (gate: number) => Promise<Ship | null>;
@@ -14,7 +13,6 @@ export class Astroport {
   constructor({name, gate_count}: {name: string, gate_count: number}) {
     this.name = name;
     this.gate_count = gate_count;
-    this.ships = [];
     this.adapters = {
       getDockedShip: async () => null,
       docker: async () => {},
@@ -33,12 +31,7 @@ export class Astroport {
   }
 
   async getDockedShip({ gate }: { gate: number }) {
-    const ship = await this.adapters.getDockedShip(gate);
-    if (ship) {
-      this.ships.push(ship);
-      return ship;
-    }
-    return null;
+    return this.adapters.getDockedShip(gate);
   }
 
   async docks(user: User, ship: Ship) {

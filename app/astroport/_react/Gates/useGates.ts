@@ -9,8 +9,9 @@ export function useGates() {
   
   const dock = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    user.docks(new Ship({ name }));
-    setOne(name);
+    user.docks(new Ship({ name })).then(() => {
+      setOne(name);
+    });    
   }
 
   useEffect(() => {
