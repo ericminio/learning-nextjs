@@ -4,12 +4,12 @@ import AstroportPage from "../astroport/page";
 import { saveDock } from "../db/commands/saveDock";
 
 describe("Docking feature", () => {
-  it("displays seeded ship and allows docking a new ship in gate-1", async () => {
+  it("allows docking a new ship in gate-1", async () => {
     const user = userEvent.setup();
     const seededShip = "Enterprise";
     const newShip = "Millennium Falcon";
     await saveDock(seededShip, 1);
-    
+
     render(<AstroportPage />);
 
     await waitFor(() => {
