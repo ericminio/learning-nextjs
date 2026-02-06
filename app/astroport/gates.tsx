@@ -1,22 +1,10 @@
 "use client";
-import { FormEvent, JSX, useEffect, useState } from "react";
-import { dockShip, getDockedShip } from "./actions";
+
+import { JSX } from "react";
+import { useGates } from "./useGates";
 
 export default function Gates(): JSX.Element {
-  const [one, setOne] = useState("");
-  const [ship, setShip] = useState("");
-
-  async function dock(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    await dockShip(ship);
-    setOne(ship);
-  }
-
-  useEffect(() => {
-    getDockedShip().then((result) => {
-      setOne(result.ship);
-    });
-  }, []);
+  const { one, ship, setShip, dock } = useGates();
 
   return (
     <section>
