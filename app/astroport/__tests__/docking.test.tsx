@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import AstroportPage from "../astroport/page";
-import { saveDock } from "../db/commands/saveDock";
+import AstroportPage from "../page";
+import { saveDock } from "../server/commands/saveDock";
 
 describe("Docking feature", () => {
   it("allows docking a new ship in gate-1", async () => {

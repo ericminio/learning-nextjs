@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { dockShip, getDockedShip } from "./actions";
+import { dockShip, getDockedShip } from "../server/actions";
 
 export function useGates() {
   const [one, setOne] = useState("");

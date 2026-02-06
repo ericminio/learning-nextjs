@@ -1,7 +1,7 @@
 "use server";
 
-import { saveDock } from "../db/commands/saveDock.js";
-import { getDocks } from "../db/queries/getDocks.js";
+import { saveDock } from "./commands/saveDock.js";
+import { getDocks } from "./queries/getDocks.js";
 
 export async function dockShip(ship: string) {
   await saveDock(ship, 1);

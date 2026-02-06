@@ -1,12 +1,12 @@
 "use client";
 
-import Gates from "./gates";
+import Gates from "./ui/gates";
+import Greetings from "./ui/greetings";
 
 export default function Home() {
   return (
     <div>
-      <h1 id="astroport-name">Hidden Face Gataway</h1>
-
+      <Greetings />
       <Gates />
     </div>
   );
