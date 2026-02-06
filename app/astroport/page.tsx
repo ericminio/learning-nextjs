@@ -1,3 +1,5 @@
+"use client";
+
 import Gates from "./gates";
 
 export default function Home() {
