@@ -70,7 +70,6 @@ export function DomainProvider({ children }: { children: React.ReactNode }) {
       }
     };
     void loadAstroport();
-     
   }, []);
 
   return (
