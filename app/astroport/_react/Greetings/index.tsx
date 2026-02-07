@@ -7,8 +7,8 @@ export default function Greetings(): JSX.Element {
   const { astroport } = useContext(DomainContext);
 
   if (!astroport) {
-    return <h1 id="astroport-name">Loading...</h1>;
+    return <h1 id="astroport-name" className="astroport-title loading">Loading...</h1>;
   }
 
-  return <h1 id="astroport-name">{astroport.name}</h1>;
+  return <h1 id="astroport-name" className="astroport-title">{astroport.name}</h1>;
 }
