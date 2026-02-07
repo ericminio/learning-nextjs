@@ -3,8 +3,8 @@ import userEvent from "@testing-library/user-event";
 import AstroportPage from "../page";
 import { saveDock } from "@server/sql/commands/saveDock";
 import { truncateTable } from "@/db/truncateTable";
-import { createAstroport } from "../_server/sql/commands/createAstroport";
-import { Astroport } from "../_domain/astroport";
+import { createAstroport } from "@server/sql/commands/createAstroport";
+import { Astroport } from "@domain/astroport";
 
 describe("Docking", () => {
   beforeEach(async () => {
