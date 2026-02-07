@@ -4,22 +4,18 @@ import { User } from "@domain/user";
 import { Ship } from "@domain/ship";
 import { dockShip } from "@server/http/dockShip";
 import { getDockedShips } from "@server/http/getDockedShips";
+import { getAstroport } from "@server/http/getAstroport";
 
-const createAstroport = () =>
-  new Astroport({
-    name: "Hidden Face Gateway",
-    gate_count: 3,
-  });
 const createUser = () => new User({ name: "Bob" });
 
 export const DomainContext = React.createContext<{
   user: User;
-  astroport: Astroport;
+  astroport: Astroport | null;
   astroportUpdated: number;
-}>({ user: createUser(), astroport: createAstroport(), astroportUpdated: 0 });
+}>({ user: createUser(), astroport: null, astroportUpdated: 0 });
 
 export function DomainProvider({ children }: { children: React.ReactNode }) {
-  const [astroport] = React.useState(() => createAstroport());
+  const [astroport, setAstroport] = React.useState<Astroport | null>(null);
   const [user] = React.useState(() => createUser());
   const [astroportUpdated, setAstroportUpdated] = React.useState(0);
 
@@ -41,34 +37,39 @@ export function DomainProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    const loadDockedShips = async () => {
-      const { gates } = await getDockedShips();
-      gates
-        .filter(
-          ({
-            ship,
-          }: {
-            gate_number: number;
-            ship: ReturnType<Ship["toJSON"]>;
-          }) => ship !== null,
-        )
-        .forEach(
-          ({
-            gate_number,
-            ship,
-          }: {
-            gate_number: number;
-            ship: ReturnType<Ship["toJSON"]>;
-          }) => {
-            astroport.docks({
-              ship: Ship.fromJSON(ship),
-              gate: gate_number,
-            });
-          },
-        );
-      setAstroportUpdated(Date.now());
+    const loadAstroport = async () => {
+      const astroportJson = await getAstroport();
+      if (astroportJson) {
+        const loadedAstroport = Astroport.fromJSON(astroportJson);
+        const { gates } = await getDockedShips();
+        gates
+          .filter(
+            ({
+              ship,
+            }: {
+              gate_number: number;
+              ship: ReturnType<Ship["toJSON"]>;
+            }) => ship !== null,
+          )
+          .forEach(
+            ({
+              gate_number,
+              ship,
+            }: {
+              gate_number: number;
+              ship: ReturnType<Ship["toJSON"]>;
+            }) => {
+              loadedAstroport.docks({
+                ship: Ship.fromJSON(ship),
+                gate: gate_number,
+              });
+            },
+          );
+        setAstroport(loadedAstroport);
+        setAstroportUpdated(Date.now());
+      }
     };
-    void loadDockedShips();
+    void loadAstroport();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

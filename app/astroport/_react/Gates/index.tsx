@@ -15,18 +15,25 @@ export default function Gates(): JSX.Element {
         </section>
       ))}
 
-      <form id="ship-form" onSubmit={dock}>
-        <input
-          id="ship"
-          name="ship"
-          value={name}
-          onChange={(e) => setName(e.currentTarget.value)}
-        />
-        <button type="submit" id="dock">
-          Dock
-        </button>
-      </form>
-      {error && <p role="alert">{error}</p>}
+      <section>
+        <form id="ship-form" onSubmit={dock}>
+          <input
+            id="ship"
+            name="ship"
+            value={name}
+            onChange={(e) => setName(e.currentTarget.value)}
+          />
+          <button type="submit" id="dock">
+            Dock
+          </button>
+        </form>
+      </section>
+
+      {error && (
+        <section>
+          <p role="alert">{error}</p>
+        </section>
+      )}
     </section>
   );
 }
