@@ -6,7 +6,7 @@ CREATE TABLE gates (
 );
 
 insert into gates (gate_number, ship_name) values
+(0, null),
 (1, null),
-(2, null),
-(3, null)
+(2, null)
 ;

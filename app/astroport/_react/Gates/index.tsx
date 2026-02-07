@@ -4,7 +4,7 @@ import { JSX } from "react";
 import { useGates } from "./useGates";
 
 export default function Gates(): JSX.Element {
-  const { gates, name, setName, dock } = useGates();
+  const { gates, name, setName, dock, error } = useGates();
 
   return (
     <section>
@@ -26,6 +26,7 @@ export default function Gates(): JSX.Element {
           Dock
         </button>
       </form>
+      {error && <p role="alert">{error}</p>}
     </section>
   );
 }

@@ -36,7 +36,7 @@ export class Astroport {
   }
 
   async docks({ ship, gate }: { ship: Ship; gate: number }) {
-    if (this.gates[gate] !== null) {
+    if (!!this.gates[gate]) {
       throw new GateNotAvailableError();
     }
     this.gates[gate] = ship;

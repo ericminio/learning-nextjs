@@ -6,18 +6,25 @@ export function useGates() {
   const { user, astroport, astroportUpdated } = useContext(DomainContext);
   const [gates, setGates] = useState(astroport.gates);
   const [name, setName] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const dock = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    await user.flies({ ship: new Ship({ name }) });
-    const gate = await user.requestsGate({ astroport });
-    await user.docks({ astroport, gate });
+    try {
+      await user.flies({ ship: new Ship({ name }) });
+      const gate = await user.requestsGate({ astroport });
+      await user.docks({ astroport, gate });
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "An unknown error occurred",
+      );
+    }
   };
 
   useEffect(() => {
     setGates(astroport.gates);
   }, [astroport, astroportUpdated]);
 
-  return { gates, name, setName, dock };
+  return { gates, name, setName, dock, error };
 }

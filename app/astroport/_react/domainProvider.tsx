@@ -5,21 +5,22 @@ import { Ship } from "@domain/ship";
 import { dockShip } from "@server/http/dockShip";
 import { getDockedShips } from "@server/http/getDockedShips";
 
-const defaultAstropport = new Astroport({
-  name: "Hidden Face Gateway",
-  gate_count: 3,
-});
-const defaultUser = new User({ name: "Bob" });
+const createAstroport = () =>
+  new Astroport({
+    name: "Hidden Face Gateway",
+    gate_count: 3,
+  });
+const createUser = () => new User({ name: "Bob" });
 
 export const DomainContext = React.createContext<{
   user: User;
   astroport: Astroport;
   astroportUpdated: number;
-}>({ user: defaultUser, astroport: defaultAstropport, astroportUpdated: 0 });
+}>({ user: createUser(), astroport: createAstroport(), astroportUpdated: 0 });
 
 export function DomainProvider({ children }: { children: React.ReactNode }) {
-  const [astroport] = React.useState(() => defaultAstropport);
-  const [user] = React.useState(() => defaultUser);
+  const [astroport] = React.useState(() => createAstroport());
+  const [user] = React.useState(() => createUser());
   const [astroportUpdated, setAstroportUpdated] = React.useState(0);
 
   user.adapters.docks = async ({
@@ -34,7 +35,7 @@ export function DomainProvider({ children }: { children: React.ReactNode }) {
     await dockShip({
       user: user.toJSON(),
       ship: ship.toJSON(),
-      gate: gate + 1,
+      gate,
     });
     setAstroportUpdated(Date.now());
   };
@@ -60,9 +61,8 @@ export function DomainProvider({ children }: { children: React.ReactNode }) {
             ship: ReturnType<Ship["toJSON"]>;
           }) => {
             astroport.docks({
-              user,
               ship: Ship.fromJSON(ship),
-              gate: gate_number - 1,
+              gate: gate_number,
             });
           },
         );

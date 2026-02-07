@@ -13,8 +13,9 @@
     "db:create": "touch db/node_api_exercise.sqlite && node db/run.js db/node_api_exercise.sqlite app/astroport/_server/sql/schema.sql",
     "db:test:clean": "rm -f db/node_api_exercise_test.sqlite",
     "db:test:create": "touch db/node_api_exercise_test.sqlite && node db/run.js db/node_api_exercise_test.sqlite app/astroport/_server/sql/schema.sql",
-    "pretest": "npm run prettier && eslint --fix .",
-    "prettier": "npx prettier --write ."
+    "pretest": "npm run prettier",
+    "prettier": "npx prettier --write .",
+    "eslint": "eslint . --ext .ts,.tsx --fix"
   },
   "dependencies": {
     "next": "15.3.2",
