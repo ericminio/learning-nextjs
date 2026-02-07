@@ -4,9 +4,3 @@ CREATE TABLE gates (
     gate_number INT NOT NULL,
     ship_name VARCHAR(255) NULL
 );
-
-insert into gates (gate_number, ship_name) values
-(0, null),
-(1, null),
-(2, null)
-;

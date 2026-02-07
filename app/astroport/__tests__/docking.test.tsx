@@ -2,11 +2,16 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import AstroportPage from "../page";
 import { saveDock } from "@server/sql/commands/saveDock";
-import { clearDocks } from "@server/sql/commands/clearDocks";
+import { truncateTable } from "@/db/truncateTable";
+import { createAstroport } from "../_server/sql/commands/createAstroport";
+import { Astroport } from "../_domain/astroport";
 
 describe("Docking", () => {
   beforeEach(async () => {
-    await clearDocks();
+    await truncateTable("gates");
+    await createAstroport(
+      new Astroport({ name: "Test Astroport", gate_count: 3 }),
+    );
   });
 
   it("assigns next available gate", async () => {
