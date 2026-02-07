@@ -70,7 +70,7 @@ export function DomainProvider({ children }: { children: React.ReactNode }) {
       }
     };
     void loadAstroport();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   return (
