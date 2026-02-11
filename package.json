@@ -9,7 +9,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "npm run db:test:clean && npm run db:test:create && jest --clearCache && jest",
+    "test": "npm run db:test:clean && npm run db:test:create && jest --clearCache && jest --runInBand",
     "db:clean": "rm -f db/node_api_exercise.sqlite",
     "db:create": "touch db/node_api_exercise.sqlite && node db/run.js db/node_api_exercise.sqlite app/astroport/_server/sql/schema.sql",
     "db:seed": "node db/run.js db/node_api_exercise.sqlite app/astroport/_server/sql/seed.sql",
