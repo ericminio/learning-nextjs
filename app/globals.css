@@ -27,7 +27,109 @@ body {
     sans-serif;
   line-height: 1.6;
   color: #e0e0e0;
-  background: #0a0a14;
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+}
+
+/* Home page styles */
+.home-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: linear-gradient(135deg, #0d1117 0%, #1a1f2e 50%, #0d1117 100%);
+}
+
+.home-card {
+  width: 100%;
+  max-width: 500px;
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 3rem 2.5rem;
+  box-shadow:
+    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.home-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  text-align: center;
+  margin-bottom: 1rem;
+  letter-spacing: -0.5px;
+}
+
+.home-description {
+  font-size: 1rem;
+  color: #64748b;
+  text-align: center;
+  line-height: 1.7;
+  margin-bottom: 2.5rem;
+}
+
+.home-steps {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.step-number {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 100%);
+  color: #ffffff;
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+}
+
+.step-label {
+  font-size: 0.875rem;
+  color: #475569;
+  font-weight: 500;
+}
+
+/* Menu styles */
+.menu-nav {
+  width: 100%;
+}
+
+.menu-button {
+  width: 100%;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-family: inherit;
+  font-weight: 600;
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 50%, #818cf8 100%);
+  border: none;
+  border-radius: 12px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+}
+
+.menu-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(124, 58, 237, 0.5);
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6366f1 100%);
+}
+
+.menu-button:active {
+  transform: translateY(0);
 }
 
 a {
