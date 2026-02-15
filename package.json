@@ -9,21 +9,19 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test": "npm run db:test:clean && npm run db:test:create && jest --clearCache && jest --runInBand",
-    "db:clean": "rm -f db/node_api_exercise.sqlite",
-    "db:create": "touch db/node_api_exercise.sqlite && node db/run.js db/node_api_exercise.sqlite app/astroport/_server/sql/schema.sql",
-    "db:seed": "node db/run.js db/node_api_exercise.sqlite app/astroport/_server/sql/seed.sql",
-    "db:test:clean": "rm -f db/node_api_exercise_test.sqlite",
-    "db:test:create": "touch db/node_api_exercise_test.sqlite && node db/run.js db/node_api_exercise_test.sqlite app/astroport/_server/sql/schema.sql",
+    "test": "npm run db:test:create && jest --clearCache && jest --runInBand",
+    "db:create": "docker exec -i postgres psql -U postgres -c \"DROP DATABASE IF EXISTS learning_nextjs\" && docker exec -i postgres psql -U postgres -c \"CREATE DATABASE learning_nextjs\" && docker exec -i postgres psql -U postgres -d learning_nextjs < app/astroport/_server/sql/schema.sql",
+    "db:seed": "docker exec -i postgres psql -U postgres -d learning_nextjs < app/astroport/_server/sql/seed.sql",
+    "db:test:create": "docker exec -i postgres psql -U postgres -c \"DROP DATABASE IF EXISTS learning_nextjs_test\" && docker exec -i postgres psql -U postgres -c \"CREATE DATABASE learning_nextjs_test\" && docker exec -i postgres psql -U postgres -d learning_nextjs_test < app/astroport/_server/sql/schema.sql",
     "pretest": "npm run prettier",
     "prettier": "npx prettier --write .",
     "eslint": "eslint . --ext .ts,.tsx --fix"
   },
   "dependencies": {
     "next": "15.3.2",
+    "pg": "^8.18.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "sql.js": "^1.13.0"
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -1,8 +1,8 @@
-const [, , dbfilename, sqlfilename] = process.argv;
+const [, , dbname, sqlfilename] = process.argv;
 
-if (!dbfilename.endsWith(".sqlite") || !sqlfilename.endsWith(".sql")) {
+if (!sqlfilename.endsWith(".sql")) {
   const command = `Error:
-    Expecting command: node db/run.js <dbfile.sqlite> <seeds.sql>
+    Expecting command: node db/run.js <dbname> <seeds.sql>
     `;
   console.log(command);
   process.exit(1);
@@ -11,21 +11,29 @@ if (!dbfilename.endsWith(".sqlite") || !sqlfilename.endsWith(".sql")) {
 import fs from "fs";
 const schema = fs.readFileSync(sqlfilename).toString();
 
-import { getConnection, runQuery } from "../app/db/sql.js";
-const runSqlFile = async (file, schema) => {
-  const db = await getConnection(file);
+import pg from "pg";
+
+const { Pool } = pg;
+
+const runSqlFile = async (dbname, schema) => {
+  const pool = new Pool({
+    host: "localhost",
+    port: 5432,
+    user: "postgres",
+    password: "postgres",
+    database: dbname,
+  });
+
   try {
-    await runQuery(db, schema);
+    await pool.query(schema);
   } catch (error) {
     console.log(error);
     process.exit(1);
+  } finally {
+    await pool.end();
   }
-
-  const data = db.export();
-  const buffer = Buffer.from(data);
-  fs.writeFileSync(file, buffer);
 };
 
-runSqlFile(dbfilename, schema).then(() => {
-  console.log(`database ${dbfilename} ready`);
+runSqlFile(dbname, schema).then(() => {
+  console.log(`database ${dbname} ready`);
 });

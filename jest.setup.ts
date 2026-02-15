@@ -2,6 +2,12 @@ import "@testing-library/jest-dom";
 import React, { useState, useRef, useLayoutEffect, ComponentType } from "react";
 import fs from "fs";
 import path from "path";
+import { closeConnection } from "./app/db/sql";
+
+// Close the database connection pool after all tests
+afterAll(async () => {
+  await closeConnection();
+});
 
 jest.mock("@domain/uuid", () => ({
   uuid: jest.fn(() => "test-uuid"),

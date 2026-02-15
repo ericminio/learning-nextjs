@@ -5,6 +5,7 @@ const createJestConfig = nextJest({
 });
 
 const customJestConfig = {
+  setupFiles: ["<rootDir>/jest.polyfills.ts"],
   setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
   testEnvironment: "jsdom",
   moduleNameMapper: {
@@ -13,7 +14,6 @@ const customJestConfig = {
     "^@react/(.*)$": "<rootDir>/app/astroport/_react/$1",
     "^@server/(.*)$": "<rootDir>/app/astroport/_server/$1",
   },
-  transformIgnorePatterns: ["node_modules/(?!(sql\\.js)/)"],
 };
 
 export default createJestConfig(customJestConfig);

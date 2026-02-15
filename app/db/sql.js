@@ -1,55 +1,50 @@
-import fs from "fs";
-import path from "path";
-import initSqlJs from "sql.js";
+import pg from "pg";
 
-export async function getConnection(file) {
-  const fileBuffer = fs.readFileSync(file);
-  const SQL = await initSqlJs({
-    locateFile: () =>
-      path.join(process.cwd(), "node_modules/sql.js/dist/sql-wasm.wasm"),
-  });
-  const db = new SQL.Database(fileBuffer);
-  await runQuery(db, "PRAGMA foreign_keys = ON;");
-  return db;
+const { Pool } = pg;
+
+function getDbName() {
+  if (process.env.NODE_ENV === "test") {
+    return "learning_nextjs_test";
+  } else {
+    return "learning_nextjs";
+  }
+}
+
+let pool = null;
+
+export async function getConnection() {
+  if (!pool) {
+    pool = new Pool({
+      host: "localhost",
+      port: 5432,
+      user: "postgres",
+      password: "postgres",
+      database: getDbName(),
+    });
+  }
+  return pool;
 }
 
 export async function getDbFile() {
-  if (process.env.NODE_ENV === "test") {
-    return "db/node_api_exercise_test.sqlite";
-  } else {
-    return "db/node_api_exercise.sqlite";
-  }
+  return getDbName();
 }
 
 export async function runQuery(db, sqlStatement, params) {
-  const response = db.exec(sqlStatement, params);
+  // Convert ? placeholders to $1, $2, etc. for PostgreSQL
+  let paramIndex = 0;
+  const pgStatement = sqlStatement.replace(/\?/g, () => `$${++paramIndex}`);
 
-  if (response.length) {
-    const [{ columns, values }] = response;
-
-    return values.map((record) =>
-      columns.reduce((o, f, index) => {
-        o[columns[index]] = record[index];
-        return o;
-      }, {}),
-    );
-  } else {
-    return [];
-  }
+  const result = await db.query(pgStatement, params);
+  return result.rows;
 }
 
-export function getRows(stmt) {
-  const rows = [];
-  while (stmt.step()) {
-    const row = stmt.getAsObject();
-    rows.push(row);
-  }
-  stmt.free();
-  return rows;
+export async function commit() {
+  // PostgreSQL auto-commits by default, no action needed
 }
 
-export async function commit(db) {
-  const data = db.export();
-  const buffer = Buffer.from(data);
-  fs.writeFileSync(await getDbFile(), buffer);
+export async function closeConnection() {
+  if (pool) {
+    await pool.end();
+    pool = null;
+  }
 }
