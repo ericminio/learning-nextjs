@@ -1,0 +1,20 @@
+name: CI
+
+on: push
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout code
+        uses: actions/checkout@v2
+      - name: install node
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: ".nvmrc"
+      - name: start postgres
+        run: docker run --name postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:18.2-alpine3.23
+      - name: Run tests
+        run: npm run test
