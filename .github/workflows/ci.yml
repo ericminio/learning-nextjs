@@ -16,5 +16,7 @@ jobs:
           node-version-file: ".nvmrc"
       - name: start postgres
         run: docker run --name postgres -e POSTGRES_PASSWORD=postgres -p 5432:5432 -d postgres:18.2-alpine3.23
+      - name: install dependencies
+        run: npm install
       - name: Run tests
         run: npm run test
